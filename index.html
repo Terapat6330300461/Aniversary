@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ครบรอบ 1 ปี 💜 Kuromi Love</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated stars background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Floating hearts */
+        .heart {
+            position: fixed;
+            color: #ff69b4;
+            font-size: 20px;
+            animation: float 6s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 3;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .kuromi-emoji {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .title {
+            font-size: 2.5em;
+            color: #ff69b4;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.5), 0 0 10px #ff69b4; }
+            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.5), 0 0 20px #ff69b4, 0 0 30px #ff69b4; }
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #e0e0e0;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            animation: slideInUp 0.8s ease-out;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes slideInUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .memory-section {
+            text-align: center;
+            color: #fff;
+        }
+
+        .memory-title {
+            font-size:  22px;
+            color: #ff69b4;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .memory-text {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .countdown-item {
+            background: rgba(255, 105, 180, 0.2);
+            border: 2px solid #ff69b4;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .countdown-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ff69b4;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.9em;
+            color: #e0e0e0;
+            margin-top: 5px;
+        }
+
+        .love-message {
+            background: linear-gradient(45deg, #ff69b4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin: 30px 0;
+            animation: rainbow 3s linear infinite;
+        }
+
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .photo-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+        .photo-placeholder {
+            aspect-ratio: 1:2;
+            background: rgba(255, 105, 180, 0.1);
+            border: 2px dashed #ff69b4;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff69b4;
+            font-size: 3em;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .photo-placeholder:hover {
+            background: rgba(255, 105, 180, 0.2);
+            transform: scale(1.05);
+        }
+
+        .button {
+            background: linear-gradient(45deg, #ff69b4, #8a2be2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+        }
+
+        .interactive-section {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .kuromi-dance {
+            font-size: 100px;
+            animation: dance 1s ease-in-out infinite;
+            cursor: pointer;
+        }
+
+        @keyframes dance {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        .message-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ff69b4;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1em;
+            margin: 15px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .message-input::placeholder {
+            color: #ccc;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .footer-text {
+            color: #ff69b4;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeInDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .title { font-size: 2em; }
+            .kuromi-emoji { font-size: 60px; }
+            .card { padding: 20px; margin: 15px 0; }
+            .countdown { grid-template-columns: repeat(2, 1fr); }
+            .countdown-number { font-size: 1.5em; }
+            .container { padding: 15px; }
+        }
+
+        @media (max-width: 480px) {
+            .title { font-size: 1.8em; }
+            .kuromi-emoji { font-size: 50px; }
+            .countdown { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .countdown-item { padding: 10px; }
+            .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="kuromi-emoji">🖤💜</div>
+            <h1 class="title">ครบรอบ 1 ปี</h1>
+            <p class="subtitle">Anz & Melody</p>
+        </div>
+
+        <div class="card">
+            <div class="memory-section">
+                <h2 class="memory-title">
+                    <span>🌟</span>
+                    <span>ความทรงจำดีๆของเรา</span>
+                    <span>🌟</span>
+                </h2>
+                <p class="memory-text">
+                    365 วันที่ผ่านมามีเรื่องราวเกิดขึ้นมากมาย</p><p class="memory-text">ทั้งได้ไปเที่ยวกับเจ้าด้วยกันหลายๆที่
+                    </p>
+                <p class="memory-text">
+                กินหมูกระทะ ดูหนัง ได้เล่นเกมด้วยกัน</p><p class="memory-text">ข้าน่ะมีความสุขมากๆเลยนะ เหอๆ 💜
+                </p>
+                <div class="love-message">
+                    "ดีใจนะที่ได้เจอกับเจ้า🖤💕"
+                </div>
+            </div>
+        </div>
+
+        
+
+        <div class="card">
+            <div class="memory-section">
+                <h2 class="memory-title">
+                    <span>📸</span>
+                    <span>ช่วงเวลาสำคัญของเรา</span>
+                    <span>📸</span>
+                </h2>
+                <div class="photo-grid">
+                    <div class="photo-placeholder" onclick="addPhoto(this,1)" >
+                    <img src="1/1.jpg"  width="100" height="120">
+                    </div>
+                    <div class="photo-placeholder" onclick="addPhoto(this,2)">
+                    <img src="2/1.jpg"  width="100" height="120">
+                    </div>
+                    <div class="photo-placeholder" onclick="addPhoto(this,3)">
+                    <img src="3/1.jpg"  width="100" height="120">
+                    </div>
+                    <div class="photo-placeholder" onclick="addPhoto(this,4)">
+                    <img src="4/1.jpg"  width="100" height="120">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <div class="card">
+            <div class="memory-section">
+                <h2 class="memory-title">
+                    <span>🎯</span>
+                    <span>สิ่งที่อยากทำในปีหน้า</span>
+                    <span>🎯</span>
+                </h2>
+                <div style="text-align: left; color: #fff; font-size: 1.1em; line-height: 2;">
+                    <p class="memory-text">💜 เที่ยวด้วยกันให้มากขึ้น</p>
+                    <p class="memory-text">🌟 กินของอร่อยด้วยกันเยอะๆ</p>
+                    <p class="memory-text">💕 รักกันมากขึ้นทุกวัน</p>
+                    <p class="memory-text">🎉 ฉลองครบรอบ 2 ปี ด้วยกัน</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p style="color: #ccc;">"ข้าน่ะก็เป็นมนุษย์ ข้ารัก ข้าเกย์ อร๊างงง💜"</p>
+        </div>
+    </div>
+
+    <script>
+        let one = 4, two = 4, three = 4, four = 4;
+
+        // Create animated stars
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Create floating hearts
+        function createHearts() {
+
+        }
+
+        // Kuromi dance animation
+        function kuromiDance() {
+            const kuromi = document.querySelector('.kuromi-dance');
+            kuromi.style.animation = 'none';
+            kuromi.innerHTML = '💜';
+            setTimeout(() => {
+                kuromi.style.animation = 'dance 0.5s ease-in-out 6';
+                kuromi.innerHTML = '🖤';
+            }, 100);
+        }
+        // Add photo functionality
+function addPhoto(element, pic) {
+    let index;
+    if (pic === 1) {
+        index = one;
+        one++;
+    } else if (pic === 2) {
+        index = two;
+        two++;
+    } else if (pic === 3) {
+        index = three;
+        three++;
+    } else if (pic === 4) {
+        index = four;
+        four++;
+    }
+
+    index = index % 4; // Ensure index is between 1–3, fallback to 1 if 0
+    const url = `${pic}/${index}.jpg`;
+
+    // Update element content
+    element.innerHTML = `<img src="${url}" width="100" height="120">`;
+
+    // Add a bit of animation
+    element.style.backgroundColor = 'rgba(255, 105, 180, 0.3)';
+    element.style.transform = 'scale(1.1)';
+    setTimeout(() => {
+        element.style.transform = 'scale(1)';
+    }, 300);
+}
+
+        // Send love message
+        function sendLove() {
+            const messageInput = document.querySelector('.message-input');
+            const message = messageInput.value.trim();
+            
+            if (message) {
+                // Create floating message
+                const floatingMessage = document.createElement('div');
+                floatingMessage.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: linear-gradient(45deg, #ff69b4, #8a2be2);
+                    color: white;
+                    padding: 20px;
+                    border-radius: 15px;
+                    font-size: 1.2em;
+                    font-weight: bold;
+                    z-index: 1000;
+                    text-align: center;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                    animation: fadeInScale 0.5s ease-out;
+                `;
+                floatingMessage.innerHTML = `💕 ${message} 💕`;
+                document.body.appendChild(floatingMessage);
+                
+                // Add CSS animation
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes fadeInScale {
+                        from { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+                        to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                setTimeout(() => {
+                    floatingMessage.remove();
+                    style.remove();
+                }, 3000);
+                
+                messageInput.value = '';
+            }
+        }
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            createHearts();
+            
+            // Add entrance animations to cards
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = (index * 0.2) + 's';
+            });
+        });
+
+        // Add some interactive effects
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('button')) {
+                // Create click effect
+                const ripple = document.createElement('div');
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: 20px;
+                    height: 20px;
+                    background: rgba(255, 255, 255, 0.5);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    animation: ripple 0.6s ease-out;
+                `;
+                ripple.style.left = e.clientX - 10 + 'px';
+                ripple.style.top = e.clientY - 10 + 'px';
+                document.body.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+            }
+        });
+
+        // Add ripple animation
+        const rippleStyle = document.createElement('style');
+        rippleStyle.textContent = `
+            @keyframes ripple {
+                to { transform: scale(4); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(rippleStyle);
+    </script>
+</body>
+</html>
