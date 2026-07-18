@@ -110,27 +110,36 @@ function initPhotoGrid() {
 
 /* ---------- Quote / tap feature ---------- */
 const QUOTES = [
-  "ทุกวันที่มีเจ้าอยู่ด้วย มันคือวันดีๆ 💜",
-  "ข้าไม่รู้จะพูดยังไงให้เจ้าเข้าใจ แต่ข้ารักเจ้ามากจริงๆ 🖤",
-  "ขอบคุณที่เลือกอยู่ข้างๆ กันตลอดมานะ",
-  "เจ้าทำให้วันธรรมดาๆ กลายเป็นวันพิเศษเสมอ",
-  "ไม่ว่าจะกี่ปี ข้าก็ยังอยากเดินไปกับเจ้าอยู่ดี",
-  "รักเจ้าที่สุดในจักรวาลเลยนะ 💫",
+  "รักนะเจ้าหมาตูบ🐶🥰",
+  "งับเอว",
+  "กริ๊งๆ",
+  "รักนะเจ้าเด็กน้อย👶😍",
+  "รักเท่าชีสเล๊ยย🧀",
+  "เหอๆ",
 ];
+
+let quoteIndex = 0;
 
 function initQuote() {
   const emoji = document.querySelector(".quote-emoji");
   const text = document.querySelector(".quote-text");
   if (!emoji || !text) return;
+
   emoji.addEventListener("click", () => {
-    const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
-    text.textContent = q;
+    text.textContent = QUOTES[quoteIndex];
+
+    quoteIndex++;
+
+    // ถ้าถึงตัวสุดท้าย ให้กลับไปตัวแรก
+    if (quoteIndex >= QUOTES.length) {
+      quoteIndex = 0;
+    }
+
     emoji.style.animation = "none";
     void emoji.offsetWidth;
     emoji.style.animation = "dance 0.4s ease-in-out 3";
   });
 }
-
 /* ---------- Message wall (stored in this browser) ---------- */
 const MSG_KEY = "anz_melody_messages";
 
@@ -189,6 +198,51 @@ function initMessageWall() {
   renderMessages();
 }
 
+
+/* ---------- X (Twitter)-style bottom tab bar ----------
+   Always shows at most 4 items so it never overflows as
+   more years get added: Home, the previous year (if it has
+   content), the current year, and the next year (if it
+   already has content). */
+const ICON_HOME_OUTLINE =
+  '<svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H10v-6h4v6h3.5a1 1 0 0 0 1-1v-9"/></svg>';
+const ICON_HOME_FILLED =
+  '<svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5v9a1 1 0 0 1-1 1h-4v-6h-4v6H4a1 1 0 0 1-1-1z"/></svg>';
+
+// activeYear: null on the start page, or a year number on year.html
+function renderTabbar(activeYear) {
+  const bar = document.querySelector("[data-tabbar]");
+  if (!bar) return;
+
+  const homeTab = `
+    <a class="tab-item${activeYear === null ? " active" : ""}" href="index.html" aria-label="หน้าแรก">
+      ${activeYear === null ? ICON_HOME_FILLED : ICON_HOME_OUTLINE}
+    </a>`;
+
+  if (activeYear === null) {
+    bar.innerHTML = homeTab;
+    return;
+  }
+
+  const years =
+    typeof YEARS !== "undefined" ? Object.keys(YEARS).map(Number) : [];
+  const hasPrev = activeYear > 1 && years.includes(activeYear - 1);
+  const hasNext = years.includes(activeYear + 1);
+
+  const yearTab = (y, active) => `
+    <a class="tab-item${active ? " active" : ""}" href="year.html?year=${y}" aria-label="ปีที่ ${y}">
+      <span class="tab-badge">${y}</span>
+    </a>`;
+
+  let html = homeTab;
+  if (hasPrev) html += yearTab(activeYear - 1, false);
+  html += yearTab(activeYear, true);
+  if (hasNext) html += yearTab(activeYear + 1, false);
+
+  bar.innerHTML = html;
+}
+
+
 /* ---------- Boot ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   createStars();
@@ -196,6 +250,11 @@ document.addEventListener("DOMContentLoaded", () => {
   initPhotoGrid();
   initQuote();
   initMessageWall();
+
+  // year.html renders its own tabbar (it knows which year is active)
+  if (!document.querySelector("[data-year-page]")) {
+    renderTabbar(null);
+  }
 
   const lbClose = document.querySelector(".lb-close");
   if (lbClose) lbClose.addEventListener("click", closeLightbox);

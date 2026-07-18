@@ -16,7 +16,7 @@ const YEARS = {
       "กินหมูกระทะ ดูหนัง ได้เล่นเกมด้วยกัน",
       "ข้าน่ะมีความสุขมากๆ เลยนะ เหอๆ 💜",
     ],
-    loveMessage: `"ดีใจนะที่ได้เจอกับเจ้า 🖤💕"`,
+    loveMessage: `"ดีใจนะที่ได้เจอกับเจ้า 💞💕"`,
     wishList: [
       "💜 เที่ยวด้วยกันให้มากขึ้น",
       "🌟 กินของอร่อยด้วยกันเยอะๆ",
@@ -26,17 +26,19 @@ const YEARS = {
   },
   2: {
     title: "ก้าวเข้าสู่ปีที่ 2",
-    heroEmoji: "🌙💜",
+    heroEmoji: "🐶💜",
     memoryParagraphs: [
-      "ปีที่ 1 จบไปแล้วพร้อมความทรงจำดีๆ มากมาย",
-      "หน้านี้เตรียมไว้สำหรับเรื่องราวของปีที่ 2 ที่กำลังจะเกิดขึ้น",
-      "ทุกครั้งที่มีความทรงจำใหม่ กลับมาแก้ข้อความตรงนี้ แล้วใส่รูปเพิ่มได้เลยนะ",
+      "2 ปีผ่านไปไวเหมือนโกเจ็ดวัน",
+      "ข้าน่ะรักเจ้าหมาตูบเท่าชีสเล๊ยย",
+      "และเจ้าก็รักข้าเท่าชีสเหมือนกัน",
+      "ไว้มาสร้างความทรงจำกันต่อเยอะๆนะ 💜",
     ],
-    loveMessage: `"ปีนี้ก็ขอให้เจ้าอยู่ข้างๆ ข้าอีกนะ 🌙💜"`,
+    loveMessage: `"รักนะเจ้าหมาตัวโปรด 🐶💕"`,
     wishList: [
-      "💜 (แก้ไขตรงนี้เป็นเป้าหมายของปีที่ 2)",
-      "🌟 (แก้ไขตรงนี้)",
-      "💕 (แก้ไขตรงนี้)",
+      "💜 หายปวดหลังไปด้วยกัน",
+      "🌟 กินให้เต็มอิ่ม เล่นให้เต็มที่ พักผ่อนให้เพียงพอ",
+      "💕 รักกันหวานชื้นจนมดขึ้นห้อง",
+      "🎉 ก้าวไปสู่ปีที่ 3 ด้วยกัน วู้วๆเย้ๆ",
     ],
   },
 };
@@ -75,7 +77,17 @@ function renderYearPage() {
   const root = document.querySelector("[data-year-page]");
   if (!root) return;
 
-  const year = getYearFromUrl();
+  const definedYears = Object.keys(YEARS).map(Number);
+  const maxYear = definedYears.length ? Math.max(...definedYears) : 1;
+
+  let year = getYearFromUrl();
+  if (year > maxYear) {
+    // don't reveal a year that hasn't been written yet — snap back
+    // to the latest real year instead
+    window.location.replace(`year.html?year=${maxYear}`);
+    return;
+  }
+
   const data = YEARS[year] || defaultYearData(year);
   const folders = foldersForYear(year);
 
@@ -83,8 +95,6 @@ function renderYearPage() {
   document.querySelector(".hero-emoji").textContent = data.heroEmoji;
   document.querySelector(".hero h1").textContent = data.title;
 
-  const crumbYear = document.querySelector("[data-current-year]");
-  if (crumbYear) crumbYear.textContent = `ปีที่ ${year}`;
 
   document.querySelector("[data-memory]").innerHTML = data.memoryParagraphs
     .map((p) => `<p>${escapeHtml(p)}</p>`)
@@ -106,47 +116,9 @@ function renderYearPage() {
     )
     .join("");
 
-  const hint = document.querySelector("[data-folder-hint]");
-  if (hint) {
-    hint.textContent = `* ใส่รูปไว้ในโฟลเดอร์ ${folders.join(
-      ", "
-    )} (ไฟล์ 0.jpg–3.jpg ต่อโฟลเดอร์)`;
-  }
 
-  // Prev / next
-  const prevLink = document.querySelector("[data-prev-link]");
-  if (prevLink) {
-    if (year <= 1) {
-      prevLink.href = "index.html";
-      prevLink.textContent = "← เริ่มต้น";
-    } else {
-      prevLink.href = `year.html?year=${year - 1}`;
-      prevLink.textContent = `← ปีที่ ${year - 1}`;
-    }
-  }
-  const nextLink = document.querySelector("[data-next-link]");
-  if (nextLink) {
-    nextLink.href = `year.html?year=${year + 1}`;
-    nextLink.textContent = YEARS[year + 1]
-      ? `ปีที่ ${year + 1} →`
-      : `เริ่มปีที่ ${year + 1} →`;
-  }
 
-  // Quick year chips
-  const chipWrap = document.querySelector("[data-year-chips]");
-  if (chipWrap) {
-    const maxKnown = Math.max(year, ...Object.keys(YEARS).map(Number));
-    let html = "";
-    for (let y = 1; y <= maxKnown; y++) {
-      html += `<a class="year-chip${
-        y === year ? " active" : ""
-      }" href="year.html?year=${y}">ปี ${y}</a>`;
-    }
-    html += `<a class="year-chip add" href="year.html?year=${
-      maxKnown + 1
-    }">+ ใหม่</a>`;
-    chipWrap.innerHTML = html;
-  }
+  renderTabbar(year);
 }
 
 document.addEventListener("DOMContentLoaded", renderYearPage);

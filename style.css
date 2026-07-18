@@ -225,38 +225,6 @@ body {
 }
 .wish-list li:last-child { border-bottom: none; }
 
-/* ---------- Year quick-nav chips ---------- */
-.year-chips {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-  margin-bottom: 6px;
-  scrollbar-width: none;
-}
-.year-chips::-webkit-scrollbar { display: none; }
-.year-chip {
-  flex: 0 0 auto;
-  padding: 7px 14px;
-  border-radius: 999px;
-  font-family: var(--font-display);
-  font-size: 0.85em;
-  color: var(--text-dim);
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--panel-border);
-  text-decoration: none;
-  white-space: nowrap;
-}
-.year-chip.active {
-  color: #fff;
-  background: linear-gradient(135deg, var(--pink), var(--purple));
-  border-color: transparent;
-}
-.year-chip.add {
-  color: var(--pink-soft);
-  border-style: dashed;
-}
-
 .folder-hint {
   font-size: 0.78em;
   color: var(--text-dim);
@@ -445,18 +413,80 @@ body {
   color: var(--text);
 }
 
-/* Sticky bottom nav bar for thumb reach */
-.bottom-nav {
+/* ---------- X (Twitter)-style bottom tab bar ---------- */
+.tabbar {
   position: fixed;
   left: 0; right: 0; bottom: 0;
   z-index: 20;
   display: flex;
-  gap: 10px;
-  padding: 12px 18px calc(14px + var(--safe-bottom));
-  background: linear-gradient(180deg, transparent, var(--bg-deep) 35%);
+  align-items: center;
+  justify-content: space-around;
+  height: 54px;
+  padding-bottom: var(--safe-bottom);
+  background: rgba(10, 6, 20, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  max-width: 480px;
+  margin: 0 auto;
 }
-.bottom-nav .btn { flex: 1; }
-.bottom-nav .btn.icon-only { flex: 0 0 52px; padding: 15px 0; }
+.tab-item {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--text-dim);
+  position: relative;
+}
+.tab-item svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+}
+.tab-item .tab-badge {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.82em;
+  border: 1.6px solid currentColor;
+  color: var(--text-dim);
+}
+.tab-item.active {
+  color: var(--pink);
+}
+.tab-item.active svg {
+  fill: currentColor;
+  stroke: none;
+}
+.tab-item.active .tab-badge {
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+}
+.tab-item::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--pink);
+  transform: translateX(-50%) scale(0);
+  transition: transform 0.2s ease;
+}
+.tab-item.active::after {
+  transform: translateX(-50%) scale(1);
+}
 
 /* ---------- Footer note ---------- */
 .footer-note {
