@@ -70,85 +70,52 @@ function updateCounter() {
     phaseShadow.style.transform = `translateX(${offset}px)`;
   }
 }
-
 /* ---------- Lightbox ---------- */
 let lbPhotos = [];
 let lbIndex = 0;
+
+// ฟังก์ชันโหลดรูปรอไว้ล่วงหน้า
+function preloadImages(photos) {
+  photos.forEach((src) => {
+    const img = new Image();
+    img.src = src;
+  });
+}
 
 function openLightbox(photos, index) {
   lbPhotos = photos;
   lbIndex = index;
   const lb = document.querySelector(".lightbox");
   const img = lb.querySelector("img");
+  
+  // โหลดรูปรอไว้ทั้งหมดทันทีที่เปิด Lightbox
+  preloadImages(lbPhotos);
+
   img.src = lbPhotos[lbIndex];
   lb.classList.add("open");
-  
-  // ล็อคไม่ให้ scroll หน้าเว็บ
   document.body.style.overflow = "hidden";
 }
 
 function closeLightbox() {
   document.querySelector(".lightbox").classList.remove("open");
-  
-  // ปลดล็อคให้ scroll ได้ตามปกติ
   document.body.style.overflow = "";
 }
+
 function lbStep(dir) {
-  lbIndex = (lbIndex + dir + lbPhotos.length) % lbPhotos.length;
-  document.querySelector(".lightbox img").src = lbPhotos[lbIndex];
+  const img = document.querySelector(".lightbox img");
+  if (!img) return;
+
+  // 1. ทำเอฟเฟกต์จางออก (Fade out)
+
+  // รอให้จางออกเสร็จแป๊บหนึ่ง (0.15 วินาที) แล้วค่อยเปลี่ยนรูป
+  setTimeout(() => {
+    lbIndex = (lbIndex + dir + lbPhotos.length) % lbPhotos.length;
+    img.src = lbPhotos[lbIndex];
+
+    // 2. ทำเอฟเฟกต์แสดงขึ้นมา (Fade in) เมื่อรูปโหลดเสร็จ
+    
+  }, 0);
 }
-
-/* ---------- Boot ---------- */
-document.addEventListener("DOMContentLoaded", () => {
-  createStars();
-  updateCounter();
-  initPhotoGrid();
-  initQuote();
-  initMessageWall();
-
-  // year.html renders its own tabbar (it knows which year is active)
-  if (!document.querySelector("[data-year-page]")) {
-    renderTabbar(null);
-  }
-
-  // ส่วนจัดการ Lightbox และเพิ่มระบบปัด (Swipe)
-  const lb = document.querySelector(".lightbox");
-  const lbClose = document.querySelector(".lb-close");
-  if (lbClose) lbClose.addEventListener("click", closeLightbox);
-  
-  const lbPrev = document.querySelector(".lb-prev");
-  const lbNext = document.querySelector(".lb-next");
-  if (lbPrev) lbPrev.addEventListener("click", () => lbStep(-1));
-  if (lbNext) lbNext.addEventListener("click", () => lbStep(1));
-
-  // --- เพิ่มระบบปัดซ้าย-ขวาตรงนี้ ---
-  if (lb) {
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    lb.addEventListener("touchstart", (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    lb.addEventListener("touchend", (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    }, { passive: true });
-
-    function handleSwipe() {
-      const swipeDistance = touchEndX - touchStartX;
-      const threshold = 50; // ความยาวขั้นต่ำที่นับว่าเป็นการปัด (พิกเซล)
-
-      if (swipeDistance < -threshold) {
-        // ปัดซ้าย -> ดูรูปถัดไป
-        lbStep(1);
-      } else if (swipeDistance > threshold) {
-        // ปัดขวา -> ดูรูปก่อนหน้า
-        lbStep(-1);
-      }
-    }
-  }
-});
 
 function initPhotoGrid() {
   // Each tile can either be a single image (data-src) or a whole
@@ -315,10 +282,41 @@ document.addEventListener("DOMContentLoaded", () => {
     renderTabbar(null);
   }
 
+  // ส่วนจัดการ Lightbox และเพิ่มระบบปัด (Swipe)
+  const lb = document.querySelector(".lightbox");
   const lbClose = document.querySelector(".lb-close");
   if (lbClose) lbClose.addEventListener("click", closeLightbox);
+  
   const lbPrev = document.querySelector(".lb-prev");
   const lbNext = document.querySelector(".lb-next");
   if (lbPrev) lbPrev.addEventListener("click", () => lbStep(-1));
   if (lbNext) lbNext.addEventListener("click", () => lbStep(1));
+
+  // --- เพิ่มระบบปัดซ้าย-ขวาตรงนี้ ---
+  if (lb) {
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    lb.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    lb.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+      const swipeDistance = touchEndX - touchStartX;
+      const threshold = 50; // ความยาวขั้นต่ำที่นับว่าเป็นการปัด (พิกเซล)
+
+      if (swipeDistance < -threshold) {
+        // ปัดซ้าย -> ดูรูปถัดไป
+        lbStep(1);
+      } else if (swipeDistance > threshold) {
+        // ปัดขวา -> ดูรูปก่อนหน้า
+        lbStep(-1);
+      }
+    }
+  }
 });
