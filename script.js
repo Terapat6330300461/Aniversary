@@ -91,6 +91,58 @@ function lbStep(dir) {
   document.querySelector(".lightbox img").src = lbPhotos[lbIndex];
 }
 
+/* ---------- Boot ---------- */
+document.addEventListener("DOMContentLoaded", () => {
+  createStars();
+  updateCounter();
+  initPhotoGrid();
+  initQuote();
+  initMessageWall();
+
+  // year.html renders its own tabbar (it knows which year is active)
+  if (!document.querySelector("[data-year-page]")) {
+    renderTabbar(null);
+  }
+
+  // ส่วนจัดการ Lightbox และเพิ่มระบบปัด (Swipe)
+  const lb = document.querySelector(".lightbox");
+  const lbClose = document.querySelector(".lb-close");
+  if (lbClose) lbClose.addEventListener("click", closeLightbox);
+  
+  const lbPrev = document.querySelector(".lb-prev");
+  const lbNext = document.querySelector(".lb-next");
+  if (lbPrev) lbPrev.addEventListener("click", () => lbStep(-1));
+  if (lbNext) lbNext.addEventListener("click", () => lbStep(1));
+
+  // --- เพิ่มระบบปัดซ้าย-ขวาตรงนี้ ---
+  if (lb) {
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    lb.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    lb.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+      const swipeDistance = touchEndX - touchStartX;
+      const threshold = 50; // ความยาวขั้นต่ำที่นับว่าเป็นการปัด (พิกเซล)
+
+      if (swipeDistance < -threshold) {
+        // ปัดซ้าย -> ดูรูปถัดไป
+        lbStep(1);
+      } else if (swipeDistance > threshold) {
+        // ปัดขวา -> ดูรูปก่อนหน้า
+        lbStep(-1);
+      }
+    }
+  }
+});
+
 function initPhotoGrid() {
   // Each tile can either be a single image (data-src) or a whole
   // folder of 4 photos (data-folder="1" -> 1/0.jpg .. 1/3.jpg)
