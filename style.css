@@ -1,0 +1,440 @@
+/* ============================================
+   Anz & Melody — Anniversary Site
+   Theme: "คืนดาวของเรา" (our night sky)
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&family=Sarabun:wght@300;400;600&display=swap');
+
+:root {
+  --bg-deep: #0a0614;
+  --bg-mid: #170c28;
+  --bg-panel: rgba(255, 255, 255, 0.05);
+  --panel-border: rgba(255, 182, 226, 0.18);
+  --pink: #ff5fa8;
+  --pink-soft: #ffb3d9;
+  --purple: #9b5de5;
+  --purple-deep: #5a2d9c;
+  --moon: #f5e9d8;
+  --text: #ede3f5;
+  --text-dim: #b8a9cc;
+
+  --font-display: 'Mali', sans-serif;
+  --font-body: 'Sarabun', sans-serif;
+
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: var(--font-body);
+  background: radial-gradient(ellipse at top, var(--bg-mid) 0%, var(--bg-deep) 65%);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  line-height: 1.7;
+}
+
+/* ---------- Starfield ---------- */
+.stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #fff;
+  border-radius: 50%;
+  animation: twinkle 3s infinite ease-in-out;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.9; }
+}
+
+/* ---------- Layout shell ---------- */
+.page {
+  position: relative;
+  z-index: 2;
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: env(safe-area-inset-top, 24px) 18px calc(96px + var(--safe-bottom));
+}
+
+/* ---------- Top nav crumb ---------- */
+.crumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82em;
+  color: var(--text-dim);
+  margin-bottom: 18px;
+}
+.crumb a { color: var(--pink-soft); text-decoration: none; }
+.crumb span.sep { opacity: 0.4; }
+.crumb .current { color: var(--text); }
+
+/* ---------- Hero ---------- */
+.hero {
+  text-align: center;
+  padding: 18px 0 8px;
+}
+.hero-emoji {
+  font-size: 3.6em;
+  filter: drop-shadow(0 0 18px rgba(155, 93, 229, 0.5));
+  animation: bob 3.5s ease-in-out infinite;
+}
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-8px) rotate(3deg); }
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.9em, 9vw, 2.6em);
+  color: var(--pink-soft);
+  margin: 10px 0 4px;
+  text-shadow: 0 0 24px rgba(255, 95, 168, 0.35);
+}
+.hero .names {
+  font-family: var(--font-display);
+  font-size: 1.05em;
+  color: var(--text-dim);
+  letter-spacing: 0.03em;
+}
+
+/* ---------- Moon-phase day counter (signature element) ---------- */
+.moon-counter {
+  margin: 26px 0 8px;
+  padding: 22px 18px;
+  border-radius: 22px;
+  background: var(--bg-panel);
+  border: 1px solid var(--panel-border);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.moon-counter::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  width: 220px;
+  height: 220px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(155,93,229,0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+.moon-phase {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  position: relative;
+  background: var(--moon);
+  box-shadow: 0 0 30px rgba(245, 233, 216, 0.4);
+}
+.moon-phase .shadow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--bg-deep);
+  transition: transform 0.6s ease;
+}
+.moon-counter .big-number {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.6em;
+  color: var(--moon);
+  display: block;
+  line-height: 1;
+}
+.moon-counter .big-label {
+  font-size: 0.92em;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+.moon-counter .sub-stats {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 14px;
+  font-size: 0.8em;
+  color: var(--text-dim);
+}
+.moon-counter .sub-stats b {
+  color: var(--pink-soft);
+  font-weight: 600;
+  display: block;
+  font-size: 1.15em;
+  font-family: var(--font-display);
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--bg-panel);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--panel-border);
+  border-radius: 20px;
+  padding: 22px;
+  margin: 16px 0;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+.card-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15em;
+  color: var(--pink-soft);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card p {
+  font-size: 0.95em;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.card p:last-child { margin-bottom: 0; }
+
+.love-message {
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15em;
+  color: var(--pink);
+  margin: 20px 0 4px;
+}
+
+.wish-list { list-style: none; }
+.wish-list li {
+  padding: 8px 0;
+  font-size: 0.95em;
+  border-bottom: 1px dashed rgba(255,255,255,0.08);
+  display: flex;
+  gap: 10px;
+}
+.wish-list li:last-child { border-bottom: none; }
+
+/* ---------- Photo grid + lightbox ---------- */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 8px;
+}
+.photo-tile {
+  position: relative;
+  aspect-ratio: 3/4;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--panel-border);
+  cursor: pointer;
+  background: rgba(255,255,255,0.03);
+}
+.photo-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.photo-tile:active img { transform: scale(1.06); }
+.photo-tile .tap-hint {
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  font-size: 0.7em;
+  background: rgba(0,0,0,0.45);
+  padding: 2px 8px;
+  border-radius: 10px;
+  color: var(--text-dim);
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(5,2,10,0.92);
+  z-index: 50;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.lightbox.open { display: flex; }
+.lightbox img {
+  max-width: 100%;
+  max-height: 78vh;
+  border-radius: 16px;
+  box-shadow: 0 0 40px rgba(155,93,229,0.4);
+}
+.lightbox .lb-nav {
+  position: absolute;
+  bottom: 30px;
+  display: flex;
+  gap: 14px;
+}
+.lightbox .lb-nav button {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid var(--panel-border);
+  color: var(--text);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: var(--font-body);
+}
+.lightbox .lb-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 1.6em;
+  color: var(--text);
+  background: none;
+  border: none;
+}
+
+/* ---------- Quote / tap-Kuromi feature ---------- */
+.quote-box {
+  text-align: center;
+}
+.quote-emoji {
+  font-size: 2.6em;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  animation: dance 2.2s ease-in-out infinite;
+}
+@keyframes dance {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+.quote-text {
+  margin-top: 14px;
+  font-size: 0.95em;
+  color: var(--text);
+  min-height: 46px;
+  font-style: normal;
+}
+.quote-hint {
+  margin-top: 6px;
+  font-size: 0.75em;
+  color: var(--text-dim);
+}
+
+/* ---------- Message wall ---------- */
+.msg-input-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.msg-input-row input {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--panel-border);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.9em;
+}
+.msg-input-row input::placeholder { color: var(--text-dim); }
+.msg-send-btn {
+  padding: 0 16px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+.msg-wall {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.msg-item {
+  background: rgba(255,255,255,0.05);
+  border-left: 3px solid var(--pink);
+  padding: 10px 12px;
+  border-radius: 0 12px 12px 0;
+  font-size: 0.88em;
+}
+.msg-item time {
+  display: block;
+  font-size: 0.72em;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+.msg-empty {
+  font-size: 0.85em;
+  color: var(--text-dim);
+  text-align: center;
+  padding: 10px 0;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05em;
+  color: #fff;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  padding: 15px 20px;
+  border-radius: 18px;
+  border: none;
+  box-shadow: 0 8px 20px rgba(255, 95, 168, 0.28);
+}
+.btn:active { transform: scale(0.98); }
+.btn.secondary {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--panel-border);
+  box-shadow: none;
+  color: var(--text);
+}
+
+/* Sticky bottom nav bar for thumb reach */
+.bottom-nav {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 20;
+  display: flex;
+  gap: 10px;
+  padding: 12px 18px calc(14px + var(--safe-bottom));
+  background: linear-gradient(180deg, transparent, var(--bg-deep) 35%);
+}
+.bottom-nav .btn { flex: 1; }
+.bottom-nav .btn.icon-only { flex: 0 0 52px; padding: 15px 0; }
+
+/* ---------- Footer note ---------- */
+.footer-note {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.8em;
+  margin-top: 22px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001s !important; animation-iteration-count: 1 !important; }
+}
+
+/* Small phones */
+@media (max-width: 340px) {
+  .hero h1 { font-size: 1.7em; }
+  .moon-counter .big-number { font-size: 2.1em; }
+}
