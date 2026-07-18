@@ -82,9 +82,16 @@ function openLightbox(photos, index) {
   const img = lb.querySelector("img");
   img.src = lbPhotos[lbIndex];
   lb.classList.add("open");
+  
+  // ล็อคไม่ให้ scroll หน้าเว็บ
+  document.body.style.overflow = "hidden";
 }
+
 function closeLightbox() {
   document.querySelector(".lightbox").classList.remove("open");
+  
+  // ปลดล็อคให้ scroll ได้ตามปกติ
+  document.body.style.overflow = "";
 }
 function lbStep(dir) {
   lbIndex = (lbIndex + dir + lbPhotos.length) % lbPhotos.length;
