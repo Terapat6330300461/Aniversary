@@ -508,14 +508,12 @@ body {
 }
 
 /* ซ่อนปุ่มทั้งหมดใน Lightbox เป็นค่าเริ่มต้น (สำหรับมือถือ/จอเล็ก) */
-.lightbox .lb-close,
 .lightbox .lb-nav {
   display: none !important;
 }
 
 /* แสดงปุ่มเฉพาะเมื่อหน้าจอมีความกว้างตั้งแต่ 1024px ขึ้นไป (สำหรับคอมพิวเตอร์) */
 @media (min-width: 1024px) {
-  .lightbox .lb-close,
   .lightbox .lb-nav {
     display: flex !important; /* หรือใช้ block ตามความเหมาะสมของหน้าตาเว็บเดิม */
   }
