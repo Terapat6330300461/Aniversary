@@ -225,6 +225,44 @@ body {
 }
 .wish-list li:last-child { border-bottom: none; }
 
+/* ---------- Year quick-nav chips ---------- */
+.year-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+  scrollbar-width: none;
+}
+.year-chips::-webkit-scrollbar { display: none; }
+.year-chip {
+  flex: 0 0 auto;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.85em;
+  color: var(--text-dim);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--panel-border);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.year-chip.active {
+  color: #fff;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  border-color: transparent;
+}
+.year-chip.add {
+  color: var(--pink-soft);
+  border-style: dashed;
+}
+
+.folder-hint {
+  font-size: 0.78em;
+  color: var(--text-dim);
+  margin-top: 10px;
+}
+
 /* ---------- Photo grid + lightbox ---------- */
 .photo-grid {
   display: grid;

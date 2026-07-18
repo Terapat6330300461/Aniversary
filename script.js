@@ -25,13 +25,31 @@ function updateCounter() {
   const bigNumberEl = document.querySelector("[data-days]");
   if (!bigNumberEl) return;
 
-  const start = new Date(START_DATE + "T00:00:00");
-  const now = new Date();
-  const diffMs = now - start;
-  const totalDays = Math.max(0, Math.floor(diffMs / 86400000));
-  const years = Math.floor(totalDays / 365);
-  const months = Math.floor((totalDays % 365) / 30);
-  const days = (totalDays % 365) % 30;
+  const startDate = new Date(START_DATE);
+  const today = new Date();
+
+  let totalDays = Math.floor(
+    (today - startDate) / (1000 * 60 * 60 * 24)
+  );
+
+  let years = today.getFullYear() - startDate.getFullYear();
+  let months = today.getMonth() - startDate.getMonth();
+  let days = today.getDate() - startDate.getDate();
+
+  if (days < 0) {
+    months--;
+    const previousMonth = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      0
+    );
+    days += previousMonth.getDate();
+  }
+
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
 
   bigNumberEl.textContent = totalDays.toLocaleString("th-TH");
 
